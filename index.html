@@ -1,0 +1,78 @@
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Порівняння імен</title>
+    <style>
+        .column {
+            display: inline-block;
+            vertical-align: top;
+            width: 45%;
+            margin: 1%;
+        }
+
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Порівняння імен клієнтів</h1>
+    <div>
+        <label for="list1">Введіть перший список імен (розділені комами):</label>
+        <input type="text" id="list1" placeholder="Наприклад: Олександр, Марія, Іван">
+    </div>
+    <div>
+        <label for="list2">Введіть другий список імен (розділені комами):</label>
+        <input type="text" id="list2" placeholder="Наприклад: Іван, Анна, Марія">
+    </div>
+    <button onclick="compareNames()">Порівняти</button>
+
+    <div class="column">
+        <h2>Перший список:</h2>
+        <ul id="column1"></ul>
+    </div>
+    <div class="column">
+        <h2>Другий список:</h2>
+        <ul id="column2"></ul>
+    </div>
+
+    <script>
+        function compareNames() {
+            // Отримуємо значення з полів вводу та приводимо до нижнього регістру
+            const list1 = document.getElementById('list1').value.toLowerCase().split(',').map(name => name.trim());
+            const list2 = document.getElementById('list2').value.toLowerCase().split(',').map(name => name.trim());
+
+            // Отримуємо елементи стовпчиків
+            const column1 = document.getElementById('column1');
+            const column2 = document.getElementById('column2');
+
+            // Очищуємо попередні результати
+            column1.innerHTML = '';
+            column2.innerHTML = '';
+
+            // Додаємо імена до стовпчиків і підсвічуємо, якщо слова зі списку 2 не всі є у списку 1
+            list1.forEach(name => {
+                const listItem = document.createElement('li');
+                listItem.textContent = name;
+                column1.appendChild(listItem);
+            });
+
+            list2.forEach(name => {
+                const listItem = document.createElement('li');
+                listItem.textContent = name;
+                const words = name.split(' ');
+                const allWordsPresent = words.every(word => list1.some(fullName => fullName.includes(word)));
+
+                if (!allWordsPresent) {
+                    listItem.classList.add('highlight');
+                }
+                column2.appendChild(listItem);
+            });
+        }
+    </script>
+</body>
+
+</html>
